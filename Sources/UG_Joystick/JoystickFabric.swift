@@ -29,7 +29,7 @@ final public class JoystickFabric {
     
     // MARK: - Public functions
     
-    public func create(type: Types, identifier: Int) -> UIButton {
+    public func create(type: Types) -> UIButton {
         switch type {
         case .button(let image, let output):
             return JoystickButton(image: image, output: output)
