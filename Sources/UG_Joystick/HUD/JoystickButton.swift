@@ -7,8 +7,10 @@
 
 import UIKit
 
+/// Delegate of Joystick Button
 public protocol JoystickButtonOutput: AnyObject {
     
+    /// Pressing the button
     func onJumpButtonPress()
     
 }

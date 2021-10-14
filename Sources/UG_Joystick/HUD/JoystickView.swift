@@ -7,9 +7,19 @@
 
 import UIKit
 
+/// Delegate of Joystick View
 public protocol JoystickViewOutput: AnyObject {
     
+    /// Сalled when the user changes the position of the joystick.
+    /// Top position returns -100.
+    /// Left position returns -100.
+    /// Center returns 0.
+    /// Right position returns 100.
+    /// Bottom position returns 100.
+    /// - Parameter newCoordinateProcent: Returns the percentage of the joystick position.
     func onJoystickViewNewCoordinate(_ newCoordinateProcent: CGPoint)
+    
+    /// Called when the user releases the joystick
     func onJoystickViewDrop()
     
 }
@@ -86,9 +96,12 @@ private extension JoystickView {
 
 private extension JoystickView {
     
-    @objc func draggedView(_ sender:UIPanGestureRecognizer) {
+    @objc func draggedView(_ sender: UIPanGestureRecognizer) {
         if sender.state == .ended {
-            dragButton.center = CGPoint(x: bounds.origin.x + bounds.width / 2, y: bounds.origin.y + bounds.height / 2)
+            dragButton.center = CGPoint(
+                x: bounds.origin.x + bounds.width / 2,
+                y: bounds.origin.y + bounds.height / 2
+            )
             output?.onJoystickViewDrop()
             return
         }
@@ -96,10 +109,18 @@ private extension JoystickView {
         let translation = sender.translation(in: self)
         let newXCoord = dragButton.center.x + translation.x
         let newYCoord = dragButton.center.y + translation.y
-        if newXCoord < 0 || newYCoord < 0 || newXCoord > bounds.width || newYCoord > bounds.height {
+        if
+            newXCoord < 0 ||
+            newYCoord < 0 ||
+            newXCoord > bounds.width ||
+            newYCoord > bounds.height
+        {
             return
         }
-        dragButton.center = CGPoint(x: dragButton.center.x + translation.x, y: dragButton.center.y + translation.y)
+        dragButton.center = CGPoint(
+            x: dragButton.center.x + translation.x,
+            y: dragButton.center.y + translation.y
+        )
         sender.setTranslation(CGPoint.zero, in: self)
         
         let procentX = dragButton.center.x * 100 / (bounds.width / 2) - 100
